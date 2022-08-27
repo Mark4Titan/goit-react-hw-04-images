@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
-import { RenrerSearchbar } from './Searchbar/RenrerSearchbar';
+import { Searchbar } from '../components/ImageFinder/Searchbar/Searchbar';
 
 export class App extends Component {
   render() {
     return (
       <>
-        <RenrerSearchbar />
+        <Searchbar />
       </>
     );
   }
