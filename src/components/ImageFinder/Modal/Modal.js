@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-// importfrom './Modal.module.css';
-// import PropTypes from 'prop-types';
+import * as SC from '../Modal/Modal.module';
+
 class Modal extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.closeModal);
   }
+  
   componentWillUnmount() {
     window.removeEventListener('keydown', this.closeModal);
   }
@@ -16,9 +17,9 @@ class Modal extends Component {
   };
   render() {
     return (
-      <div className='Overlay' onClick={this.closeModal}>
-        <div className='Modal'>{this.props.children}</div>
-      </div>
+      <SC.DIVOverlay className="Overlay" onClick={this.closeModal}>
+        <SC.DIVModal className="Modal">{this.props.children}</SC.DIVModal>
+      </SC.DIVOverlay>
     );
   }
 }

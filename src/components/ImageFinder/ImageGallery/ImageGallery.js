@@ -1,12 +1,7 @@
-// import PropTypes from 'prop-types';
-// import { Box } from 'components/Box';
 import React, { Component } from 'react';
-// import igs from './ImageGallery.module.css';
-// import PropTypes from 'prop-types';
+import * as SC from '../ImageGallery/ImageGallery.module';
 import ImageGalleryItem from './ImageGalleryItem/ImageGalleryItem';
 import Modal from '../Modal/Modal';
-
-
 
 
 class ImageGallery extends Component {
@@ -30,25 +25,27 @@ class ImageGallery extends Component {
   render() {
     const { showModal, elem } = this.state;
     const { gallery } = this.props;
-    // console.log(elem);
     const { tags, largeImageURL } = elem;
     return (
-      <ul className='ImageGallery'>
-        {gallery.map(item => {
-          return (
-            <ImageGalleryItem
-              key={item.id}
-              elem={item}
-              getImgForModal={this.getImgForModal}
-            />
-          );
-        })}
-        {showModal && (
-          <Modal hideModal={this.toggleModal}>
-            <img src={largeImageURL} alt={tags} />
-          </Modal>
-        )}
-      </ul>
+      <SC.DIV>
+        <SC.UL className="ImageGallery">
+          {gallery.map(item => {
+            return (
+              <SC.LI className="ImageGalleryItem" id={item.id} key={item.id}>
+                <ImageGalleryItem
+                  elem={item}
+                  getImgForModal={this.getImgForModal}
+                />
+              </SC.LI>
+            );
+          })}
+          {showModal && (
+            <Modal hideModal={this.toggleModal}>
+              <img src={largeImageURL} alt={tags} />
+            </Modal>
+          )}
+        </SC.UL>
+      </SC.DIV>
     );
   }
 }

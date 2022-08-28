@@ -1,20 +1,19 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import * as SC from '../ImageGalleryItem/ImageGalleryItem.module';
 
 const ImageGalleryItem = ({ elem, getImgForModal }) => {
-  // console.log(elem);
   const { webformatURL, tags } = elem;
-  // console.log(largeImageURL);
   return (
-    <li className='ImageGalleryItem'>
-      <img
+    <>
+      <SC.IMG
         src={webformatURL}
         alt={tags}
-        className='image'
+        className="image"
         onClick={() => getImgForModal({ elem })}
       />
-    </li>
+    </>
   );
 };
+
 
 export default ImageGalleryItem;

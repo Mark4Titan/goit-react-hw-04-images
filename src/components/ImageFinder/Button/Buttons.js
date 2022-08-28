@@ -1,18 +1,16 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import * as SC from '../Button/Buttons.module';
 
 const Button = ({ getNewPage }) => {
-  // console.log(getNewPage);
   return (
-    <button
-      className='Button'
+    <SC.BUTTON
+      className="Button"
       type="button"
       data-action="load-more"
-      // disabled={true}
       onClick={getNewPage}
     >
       Show more
-    </button>
+    </SC.BUTTON>
   );
 };
 
