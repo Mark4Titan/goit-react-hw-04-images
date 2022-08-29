@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import React from 'react';
 import * as SC from '../ImageGalleryItem/ImageGalleryItem.module';
 
@@ -14,6 +15,14 @@ const ImageGalleryItem = ({ elem, getImgForModal }) => {
     </>
   );
 };
+
+ImageGalleryItem.propTypes = {
+  elem: PropTypes.shape({
+    tags: PropTypes.any,
+    webformatURL: PropTypes.any
+  }),
+  getImgForModal: PropTypes.func
+}
 
 
 export default ImageGalleryItem;

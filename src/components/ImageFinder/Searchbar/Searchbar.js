@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import * as SC from '../Searchbar/Searchbar.module';
 
 const Searchbar = ({ handleSubmit, pageOptionsClick, per_pageOptions }) => {
@@ -30,5 +31,14 @@ const Searchbar = ({ handleSubmit, pageOptionsClick, per_pageOptions }) => {
     </header>
   );
 };
+
+Searchbar.propTypes = {
+  handleSubmit: PropTypes.any,
+  pageOptionsClick: PropTypes.any,
+  per_pageOptions: PropTypes.shape({
+    map: PropTypes.func,
+    value: PropTypes.any
+  })
+}
 
 export default Searchbar;

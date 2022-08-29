@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import React from 'react';
 import { Audio } from 'react-loader-spinner';
 
@@ -14,5 +15,9 @@ const Loader = ({ isLoading }) => {
     />
   );
 };
+
+Loader.propTypes = {
+  isLoading: PropTypes.any
+}
 
 export default Loader;

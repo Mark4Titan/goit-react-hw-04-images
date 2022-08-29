@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as SC from '../Modal/Modal.module';
+import PropTypes from 'prop-types';
 
 class Modal extends Component {
   componentDidMount() {
@@ -22,6 +23,11 @@ class Modal extends Component {
       </SC.DIVOverlay>
     );
   }
+}
+
+Modal.propTypes = {
+  children: PropTypes.any,
+  hideModal: PropTypes.func
 }
 
 export default Modal;

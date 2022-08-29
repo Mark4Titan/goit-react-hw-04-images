@@ -113,8 +113,10 @@ export class ImageFinder extends Component {
           <Button getNewPage={this.setNewPage} />
         )}
       </SC.DivSearchbar>
+      
     );
   }
 }
+
 
 export default ImageFinder;

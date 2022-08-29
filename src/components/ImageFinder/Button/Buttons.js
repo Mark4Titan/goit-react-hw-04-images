@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import React from 'react';
 import * as SC from '../Button/Buttons.module';
 
@@ -13,5 +14,9 @@ const Button = ({ getNewPage }) => {
     </SC.BUTTON>
   );
 };
+
+Button.propTypes = {
+  getNewPage: PropTypes.any
+}
 
 export default Button;

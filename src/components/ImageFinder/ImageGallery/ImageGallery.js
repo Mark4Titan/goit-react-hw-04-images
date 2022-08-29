@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import React, { Component } from 'react';
 import * as SC from '../ImageGallery/ImageGallery.module';
 import ImageGalleryItem from './ImageGalleryItem/ImageGalleryItem';
@@ -48,6 +49,12 @@ class ImageGallery extends Component {
       </SC.DIV>
     );
   }
+}
+
+ImageGallery.propTypes = {
+  gallery: PropTypes.shape({
+    map: PropTypes.func
+  })
 }
 
 export default ImageGallery;
