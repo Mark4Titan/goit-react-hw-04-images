@@ -34,7 +34,7 @@ export const ImageFinder = () => {
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
   const [gallerys, setGallery] = useState([]);
-  const [fetchLength, setFetchLength] = useState(null);
+  const [fetchLength, setFetchLength] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [per_page, setPer_page] = useState(4);
   const inputEl = useRef(null);
@@ -43,14 +43,11 @@ export const ImageFinder = () => {
     if (!query) return;
 
     setIsLoading(true);
-
     fetchImages(query, page, per_page)
       .then(result => {
         const { hits, totalHits } = result.data;
         setGallery(prevState => [...prevState, ...hits]);
-        if (page === 1) setFetchLength(totalHits - per_page)
-        else setFetchLength(privState => privState - per_page);
-        console.log(result.data);
+          setFetchLength(Math.ceil(totalHits / per_page));
         setPer_page(per_page);
       })
       .catch(error => {
@@ -90,7 +87,6 @@ export const ImageFinder = () => {
       setPage(prevState => prevState + 1);
       return;
     }
-    // debugger
     setPage(1);
     setQuery(inputEl.current.value);
     setGallery([]);
@@ -99,9 +95,7 @@ export const ImageFinder = () => {
 
   return (
     <SC.DivSearchbar className="Searchbar">
-      <SC.H1>
-        Search image {query}
-      </SC.H1>
+      <SC.H1>Search image {query}</SC.H1>
 
       <Searchbar
         handleSubmit={handleSubmit}
@@ -114,8 +108,8 @@ export const ImageFinder = () => {
 
       <Loader isLoading={isLoading} />
 
-      {fetchLength > 0 && !isLoading && (
-        <Button getNewPage={setNewPage} fetchLength={fetchLength} />
+      {fetchLength !== page && !isLoading && (
+        <Button getNewPage={setNewPage} fetchLength={fetchLength} page={page} />
       )}
     </SC.DivSearchbar>
   );

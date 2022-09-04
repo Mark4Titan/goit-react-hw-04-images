@@ -2,7 +2,7 @@ import PropTypes from "prop-types"
 import React from 'react';
 import * as SC from '../Button/Buttons.module';
 
-const Button = ({ getNewPage, fetchLength }) => {
+const Button = ({ getNewPage, page, fetchLength }) => {
   return (
     <>
       <SC.BUTTON
@@ -11,14 +11,16 @@ const Button = ({ getNewPage, fetchLength }) => {
         data-action="load-more"
         onClick={getNewPage}
       >
-        download more? still left {fetchLength} images.
+        Load more ({page}/{fetchLength})
       </SC.BUTTON>
     </>
   );
 };
 
 Button.propTypes = {
-  getNewPage: PropTypes.any
-}
+  getNewPage: PropTypes.func.isRequired,
+  page: PropTypes.number.isRequired,
+  fetchLength: PropTypes.number.isRequired
+};
 
 export default Button;
