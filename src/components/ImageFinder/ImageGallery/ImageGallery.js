@@ -1,60 +1,53 @@
 import PropTypes from "prop-types"
-import React, { Component } from 'react';
+
+import { useState } from 'react';
 import * as SC from '../ImageGallery/ImageGallery.module';
 import ImageGalleryItem from './ImageGalleryItem/ImageGalleryItem';
 import Modal from '../Modal/Modal';
 
 
-class ImageGallery extends Component {
-  state = {
-    elem: '',
-    showModal: false,
+const ImageGallery = ({gallery}) => {
+  const [elem, setElem] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  
+  
+
+  const toggleModal = () => {
+    setShowModal(m => !m)
   };
-  toggleModal = () => {
-    this.setState({
-      showModal: !this.state.showModal,
-    });
-  };
-  getImgForModal = ({ elem }) => {
-    if (elem) {
-      this.toggleModal();
-      this.setState({
-        elem,
-      });
+
+  const getImgForModal = ({ elem }) => {
+    if ({ elem }) {
+      toggleModal();
+      setElem(elem);
     }
   };
-  render() {
-    const { showModal, elem } = this.state;
-    const { gallery } = this.props;
-    const { tags, largeImageURL } = elem;
-    return (
-      <SC.DIV>
-        <SC.UL className="ImageGallery">
-          {gallery.map(item => {
-            return (
-              <SC.LI className="ImageGalleryItem" id={item.id} key={item.id}>
-                <ImageGalleryItem
-                  elem={item}
-                  getImgForModal={this.getImgForModal}
-                />
-              </SC.LI>
-            );
-          })}
-          {showModal && (
-            <Modal hideModal={this.toggleModal}>
+
+  const { tags, largeImageURL } = elem;
+  return (
+    <SC.DIV>
+      <SC.UL className="ImageGallery">
+        {gallery.map(item => {
+          return (
+            <SC.LI className="ImageGalleryItem" id={item.id} key={item.id}>
+              <ImageGalleryItem
+                elem={item}
+                getImgForModal={getImgForModal}
+              />
+            </SC.LI>
+          );
+        })}
+        {showModal && (
+            <Modal hideModal={toggleModal}>
               <img src={largeImageURL} alt={tags} />
             </Modal>
           )}
-        </SC.UL>
-      </SC.DIV>
-    );
-  }
-}
+      </SC.UL>
+    </SC.DIV>
+  );
+};
 
 ImageGallery.propTypes = {
-  gallery: PropTypes.shape({
-    map: PropTypes.func
-  })
+  gallery: PropTypes.array.isRequired  
 }
-
 export default ImageGallery;

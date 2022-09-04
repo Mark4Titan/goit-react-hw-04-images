@@ -1,11 +1,12 @@
 import PropTypes from "prop-types"
 import * as SC from '../Searchbar/Searchbar.module';
 
-const Searchbar = ({ handleSubmit, pageOptionsClick, per_pageOptions }) => {
+const Searchbar = ({ handleSubmit, pageOptionsClick, per_pageOptions, reff }) => {
   return (
     <header className="SearchbarHeader">
       <SC.FORM className="SearchForm" onSubmit={handleSubmit}>
         <SC.INPUT
+          ref={reff}
           className="classNameinput"
           type="text"
           autoComplete="off"
@@ -19,7 +20,7 @@ const Searchbar = ({ handleSubmit, pageOptionsClick, per_pageOptions }) => {
         </SC.BUTTON>
         <SC.SPAN>
           to display
-          <SC.SELECT onClick={pageOptionsClick}>
+          <SC.SELECT onChange={pageOptionsClick}>
             {per_pageOptions.map(per_pageOptions => (
               <option key={per_pageOptions.value} value={per_pageOptions.value}>
                 {per_pageOptions.value}
@@ -33,12 +34,11 @@ const Searchbar = ({ handleSubmit, pageOptionsClick, per_pageOptions }) => {
 };
 
 Searchbar.propTypes = {
-  handleSubmit: PropTypes.any,
-  pageOptionsClick: PropTypes.any,
-  per_pageOptions: PropTypes.shape({
-    map: PropTypes.func,
-    value: PropTypes.any
-  })
-}
+  handleSubmit: PropTypes.func.isRequired,
+  pageOptionsClick: PropTypes.func.isRequired,
+  per_pageOptions: PropTypes.array.isRequired,
+  reff: PropTypes.object.isRequired
+};
+
 
 export default Searchbar;

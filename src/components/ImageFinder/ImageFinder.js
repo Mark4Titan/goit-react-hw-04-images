@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import fetchImages from '../ImageFinder/API/pixabayApi';
 import ImageGallery from '../ImageFinder/ImageGallery/ImageGallery';
 import Button from '../ImageFinder/Button/Buttons';
 import Loader from '../ImageFinder/Loader/Loader';
 import * as SC from './ImageFinder.module';
-import Searchbar from '../ImageFinder/Searchbar/Searchbar'
+import Searchbar from '../ImageFinder/Searchbar/Searchbar';
 
 const per_pageOptions = [
   {
@@ -30,93 +30,95 @@ const per_pageOptions = [
   },
 ];
 
-export class ImageFinder extends Component {
-  state = {
-    query: '',
-    page: 1,
-    gallery: [],
-    fetchLength: null,
-    isLoading: false,
-    per_page: '4',
-  };
+export const ImageFinder = () => {
+  const [query, setQuery] = useState('');
+  const [page, setPage] = useState(1);
+  const [gallerys, setGallery] = useState([]);
+  const [fetchLength, setFetchLength] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [per_page, setPer_page] = useState(4);
+  const inputEl = useRef(null);
 
-  componentDidUpdate(prevProps, prevState) {
-    const { query, page } = this.state;
-    if (query !== prevState.query && query !== '') {
-      this.fetchImagesByQuery(query);
-    } else if (query === prevState.query && page !== prevState.page) {
-      this.fetchImagesByQuery(query);
-    }
-  }
+  useEffect(() => {
+    if (!query) return;
 
-  setNewPage = e => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-    }));
-  };
-
-  pageOptionsClick = e => {
-    this.setState({ per_page: e.target.value });
-  };
-
-  handleSubmit = e => {
-    e.preventDefault();
-    const query = e.target[0].value;
-    this.setState({ query: query, page: 1, gallery: [], fetchLength: 0 });
-    e.target[0].value = '';
-  };
-
-  fetchImagesByQuery = (prevProps, prevState) => {
-    const { query, page, per_page } = this.state;
-
-    this.setState({ isLoading: true });
+    setIsLoading(true);
 
     fetchImages(query, page, per_page)
       .then(result => {
-        this.setState(prevState => ({
-          gallery: [...prevState.gallery, ...result],
-          fetchLength: result.length,
-          per_page: per_page,
-        }));
+        const { hits, totalHits } = result.data;
+        setGallery(prevState => [...prevState, ...hits]);
+        if (page === 1) setFetchLength(totalHits - per_page)
+        else setFetchLength(privState => privState - per_page);
+        console.log(result.data);
+        setPer_page(per_page);
       })
       .catch(error => {
-        this.setState({ error: true });
+        console.log(error);
       })
       .finally(() => {
-        this.setState({ isLoading: false });
-        window.scrollTo({
-          top: document.documentElement.scrollHeight,
-          behavior: 'smooth',
-        });
+        setIsLoading(false);
+        if (page === 1) return;
+        setTimeout(
+          () =>
+            window.scrollBy({
+              top: document.documentElement.scrollHeight / (per_page / 2),
+              behavior: 'smooth',
+            }),
+          1
+        );
       });
-    // }
+  }, [query, page, per_page]);
+
+  useEffect(() => {
+    if (query === inputEl.current.value) inputEl.current.value = '';
+  }, [query, page]);
+
+  const setNewPage = e => {
+    setPage(prevState => prevState + 1);
   };
 
-  render() {
-    const { gallery, fetchLength, isLoading } = this.state;
+  const pageOptionsClick = e => {
+    setGallery([]);
+    setPer_page(e.target.value);
+  };
 
-    return (
-      <SC.DivSearchbar className="Searchbar">
-        <SC.H1>Search image</SC.H1>
+  const handleSubmit = e => {
+    e.preventDefault();
+    if (inputEl.current.value === '') return;
+    if (inputEl.current.value === query) {
+      setPage(prevState => prevState + 1);
+      return;
+    }
+    // debugger
+    setPage(1);
+    setQuery(inputEl.current.value);
+    setGallery([]);
+    setFetchLength(0);
+  };
 
-        <Searchbar
-          handleSubmit={this.handleSubmit}
-          pageOptionsClick={this.pageOptionsClick}
-          per_pageOptions={per_pageOptions}
-        />  
+  return (
+    <SC.DivSearchbar className="Searchbar">
+      <SC.H1>
+        Search image {query}
+      </SC.H1>
 
-        <ImageGallery gallery={gallery} />
+      <Searchbar
+        handleSubmit={handleSubmit}
+        pageOptionsClick={pageOptionsClick}
+        per_pageOptions={per_pageOptions}
+        reff={inputEl}
+      />
 
-        <Loader isLoading={isLoading} />
+      <ImageGallery gallery={gallerys} />
 
-        {fetchLength > 0 && !isLoading && (
-          <Button getNewPage={this.setNewPage} />
-        )}
-      </SC.DivSearchbar>
-      
-    );
-  }
-}
+      <Loader isLoading={isLoading} />
 
+      {fetchLength > 0 && !isLoading && (
+        <Button getNewPage={setNewPage} fetchLength={fetchLength} />
+      )}
+    </SC.DivSearchbar>
+  );
+};
 
 export default ImageFinder;
